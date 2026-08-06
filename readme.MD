@@ -1,1 +1,1 @@
-Github actions practise handson lab
+Github actions practice handson lab
