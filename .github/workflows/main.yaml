@@ -1,0 +1,107 @@
+name: Deploy to Production
+
+# Trigger on push to main branch
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:  # Allow manual trigger
+
+permissions:
+    id-token: write
+    contents: read
+
+jobs:
+  # Job 1: Build and test (no environment protection needed)
+  build:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      
+      - name: Run hello script (test)
+        run: python hello.py
+      
+      - name: Print Build Info
+        run: |
+          echo "================================"
+          echo "Build completed successfully!"
+          echo "Branch: ${{ github.ref_name }}"
+          echo "Commit: ${{ github.sha }}"
+          echo "Actor: ${{ github.actor }}"
+          echo "================================"
+
+  # Job 2: Deploy to Production (requires environment protection & approval)
+  deploy-production:
+    name: Deploy to Production Environment
+    runs-on: ubuntu-latest
+    
+    # This is where environment protection rules apply!
+    environment:
+      name: prod
+      #url: https://myapp.example.com  # URL of your deployed app
+    
+    # Only run after build succeeds
+    needs: build
+    
+    # Only deploy from main branch
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      
+      - name: "⏳ Waiting for approval..."
+        run: |
+          echo "================================"
+          echo "⏳ DEPLOYMENT PAUSED"
+          echo "================================"
+          echo "Workflow is paused and waiting for approval"
+          echo "Reviewers configured in 'prod' environment:"
+          echo "- Check GitHub UI for approval prompt"
+          echo "- Go to: Actions → Deploy to Production → [Latest run]"
+          echo "================================"
+      
+      - name: "✅ Approved! Starting deployment..."
+        run: |
+          echo "================================"
+          echo "✅ DEPLOYMENT APPROVED"
+          echo "================================"
+          echo "Proceeding with production deployment..."
+          sleep 2
+          echo "✅ Ready to deploy!"
+          echo "================================"
+      
+      - name: Deploy to Production
+        run: |
+          echo "================================"
+          echo "🚀 DEPLOYING TO PRODUCTION"
+          echo "================================"
+          python hello.py
+          echo ""
+          echo "Deployment Details:"
+          echo "- Environment: prod"
+          echo "- Branch: ${{ github.ref_name }}"
+          echo "- Commit SHA: ${{ github.sha }}"
+          echo "- Deployed by: ${{ github.actor }}"
+          echo "- Timestamp: $(date)"
+          echo "================================"
+      
+      - name: "✅ Deployment Complete"
+        run: |
+          echo "================================"
+          echo "✅ PRODUCTION DEPLOYMENT COMPLETE"
+          echo "================================"
+          echo "Your application is now live in production!"
+          echo "================================"
