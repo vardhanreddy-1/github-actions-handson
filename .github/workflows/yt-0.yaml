@@ -1,0 +1,30 @@
+name: 'Youtube course for Github actions'
+
+on:
+    push
+
+jobs:
+    Runner-details:
+        name: 'Getting the Runner details'
+        runs-on: 'ubuntu-latest'
+        steps:
+            #Code Checkout Step
+            - name: 'Code checkout step'
+              uses: actions/checkout@v7
+              with:
+                     fetch-depth: 1
+            #Getting the branch details
+            - name: 'Getting the branch details'
+              run:  |
+                     echo "The branch name which is present in this workflow: $GITHUB_REF_NAME"
+                     echo "The workflow name:$GITHUB_WORKFLOW"
+                     echo "The Runner Name: $RUNNER_NAME"
+                     echo "The Runner ID: $RUNNER_ID"
+            
+    job2:
+        name: "This is job2"
+        runs-on: 'ubuntu-latest'
+        steps:
+            #Code checkout step
+            - name: 'Final Step'
+              run: echo "Hello from final step"
