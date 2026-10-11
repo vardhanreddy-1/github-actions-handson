@@ -1,0 +1,32 @@
+name: "Azure RBAC assignment for a User, group, Service Principal"
+
+on:
+    workflow_dispatch:
+        inputs:
+            roleName:
+                description: 'Name of the role to be assigned'
+                required: true
+                type: string
+            assigneeObjectId:
+                description: 'Object id of the User,Group,Service principal'
+                required: true
+                type: string
+            scope:
+                description: "Scope type you want to assign - resource/resource group/subscription"
+                required: true
+                type: string
+
+permissions:
+    id-token: write
+    contents: read
+
+
+    
+jobs:
+      role-assignment:
+        name: Azure RBAC role assignment Job
+        uses: ./.github/workflows/azure-login.yaml
+        secrets: inherit
+        with:
+            az-script: |
+                    az role assignment create --role ${{ inputs.roleName }} --assignee-object-id ${{ inputs.assigneeObjectId}} --scope ${{ inputs.scope}}

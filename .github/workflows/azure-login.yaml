@@ -1,0 +1,55 @@
+name: Azure Login Common Workflow
+
+on:
+    workflow_call:
+        inputs:
+            az-script:
+                description: 'Az Cli Commands to run after login'
+                required: false
+                type: string
+                default: 'echo "No Script Provided' 
+        secrets:
+            AZURE_CLIENT_ID:
+                required: true
+            AZURE_TENANT_ID:
+                required: true
+            SUB_ID:
+                required: true
+            
+
+permissions:
+    id-token: write
+    contents: read
+
+jobs:
+    Azure-login-job:
+        name: "Azure Login Job"
+        runs-on: 'ubuntu-latest'
+        steps:
+            #Code Checkout
+            - name: 'Code checkout'
+              uses: actions/checkout@v7
+              with:
+                    fetch-depth: 1
+            #Azure Login
+            - name: 'Azure-login'
+              uses: azure/login@v2
+              with:
+                    client-id: ${{ secrets.AZURE_CLIENT_ID }}
+                    tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+                    subscription-id: ${{ secrets.SUB_ID}}
+                    enable-AzPSSession: true
+            #Azure Set Context
+            - name: 'Azure-Set context'
+              uses: azure/cli@v2
+              with:
+                azcliversion: 'latest'
+                inlineScript: |
+                       az account set --subscription $SUBSCRIPTION_ID
+                       SUB_NAME=$(az account show --query name --output tsv)
+                       echo "========Subscription Details=========="
+                       echo "======================================"
+                       echo "Subscription Name ==========>$SUB_NAME"
+                       echo "======================================="
+                       ${{inputs.az-script}}
+        
