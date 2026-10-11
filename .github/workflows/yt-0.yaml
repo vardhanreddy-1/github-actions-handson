@@ -19,3 +19,6 @@ jobs:
               run: |
                     echo "Runner on which this job & Step is running:$RUNNER_NAME"
                     echo "Os of the runner: $RUNNER_OS"
+            - name: 'Printing the runner name'
+              run: |
+                    echo "Added another step in the workflow"
