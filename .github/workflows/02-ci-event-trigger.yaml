@@ -1,4 +1,4 @@
-name: "Multiple Event trigger"
+name: "02-Multiple Event trigger"
 
 on:
     push:
