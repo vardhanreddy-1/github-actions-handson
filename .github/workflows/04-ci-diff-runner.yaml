@@ -17,11 +17,11 @@ jobs:
     # WINDOWS OS RUNNER
     windows-runner-job:
         name: 'Windows runner job'
+        #Windows default shell is powershell
         runs-on: 'windows-latest'
         steps:
             - name: 'Details of the Windows runner'
-              shell: bash
               run: |
-                   echo "Name of the runner - $RUNNER_NAME"
-                   echo "OS of the runner - $RUNNER_OS"
-                   echo "Architecture of the runner - $RUNNER_ARCH"
+                   echo "Name of the runner - $env:RUNNER_NAME"
+                   echo "OS of the runner - $env:RUNNER_OS"
+                   echo "Architecture of the runner - $env:RUNNER_ARCH"
