@@ -1,0 +1,17 @@
+name: "01-Understanding Contexts"
+
+#Trigger - Repository Event
+on:
+    push
+
+jobs:
+    event-info-job:
+        name: "Event Information Job"
+        runs-on: 'ubuntu-latest'
+        steps:
+            - name: 'print the trigger event & os info'
+              run: |
+                   echo "my trigger event is ${{ github.event_name }}"
+                   echo "my runner os is ${{ runner.os }}"
+                   echo "my runner arch is ${{ runner.arch}}"
+                   echo "my runner name is ${{ runner.name}}"
