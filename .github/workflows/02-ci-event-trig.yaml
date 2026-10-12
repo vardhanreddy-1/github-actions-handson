@@ -1,0 +1,17 @@
+name: "Multiple Event trigger"
+
+on:
+    push:
+    pull_request:
+    workflow_dispatch:
+    schedule:
+        - cron: '*/5 * * * *'
+    
+jobs:
+    multiple-event-trigger-job:
+        name: "Multiple Events Trigger Job"
+        runs-on: ubuntu-latest
+        steps:
+            - name: 'Event trigger Details'
+              run: |
+                   echo "Event that triggered the workflow:${{ github.event_name}}"
