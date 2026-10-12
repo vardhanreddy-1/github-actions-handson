@@ -8,8 +8,14 @@ jobs:
         name: "Details of a runner"
         runs-on: 'ubuntu-latest'
         steps:
-            - name: 'Runner details'
+            - name: 'Runner details by using the Context'
               run: |
                     echo "The runner on which the job is running - ${{ runner.name }}"
                     echo "The Operating System of runner on which the job is running - ${{ runner.os }}"
                     echo "The Architectire of the runner: ${{ runner.arch }}"
+
+            - name: 'Runner details by using the Env variables'
+              run: |
+                   echo "The name of the runner - $RUNNER_NAME"
+                   echo "The operating system of the runner - $RUNNER_OS"
+                   echo "The architecture of the runner - $RUNNER_ARCH"
