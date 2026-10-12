@@ -1,0 +1,26 @@
+name: "04-Different runners(wiindows & Linux)"
+
+on:
+    push
+
+jobs:
+    # WINDOWS OS RUNNER
+    linux-runner-job:
+        name: "Linux runner job"
+        runs-on: 'ubuntu-latest'
+        steps:
+            - name: 'Details of the LINUX runner'
+              run: |
+                   echo "Name of the runner - $RUNNER_NAME"
+                   echo "OS of the runner - $RUNNER_OS"
+                   echo "Architecture of the runner - $RUNNER_ARCH"
+    # WINDOWS OS RUNNER
+    windows-runner-job:
+        name: 'Windows runner job'
+        runs-on: 'ubuntu-latest'
+        steps:
+            - name: 'Details of the Windows runner'
+              run: |
+                   echo "Name of the runner - $RUNNER_NAME"
+                   echo "OS of the runner - $RUNNER_OS"
+                   echo "Architecture of the runner - $RUNNER_ARCH"
